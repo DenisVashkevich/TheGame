@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Enums;
 
 namespace Core.Interfaces
 {
-	public interface ICreature
+	//All AI controlled creatures should implement this interface
+	public interface IAIControlled
 	{
-		int Id { get; set; }
-		string Name { get; set; }
-		int HitPoints { get; set; }
-		double Moves { get; set; }
+		MoveDirection GetMoveDirrection();
 	}
 }

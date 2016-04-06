@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-	public interface ICreature
+	//All flying creatures should implement this interface
+	interface ICanFly
 	{
-		int Id { get; set; }
-		string Name { get; set; }
-		int HitPoints { get; set; }
-		double Moves { get; set; }
 	}
 }

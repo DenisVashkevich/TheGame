@@ -40,13 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Enums\MoveDirection.cs" />
+    <Compile Include="Interfaces\IAIControlled.cs" />
+    <Compile Include="Interfaces\ICanFly.cs" />
+    <Compile Include="Models\Monster.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Interfaces\ICreature.cs" />
+    <Compile Include="Interfaces\IGrowing.cs" />
+    <Compile Include="Interfaces\IConsumable.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="EventArgs\AttackActionEventArgs.cs" />
+    <Compile Include="Models\BaseStats.cs" />
+    <Compile Include="Models\Map\MapTileBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

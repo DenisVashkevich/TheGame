@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-	public interface ICreature
+	//Growing in time interactive objects should implement this interactive
+	interface IGrowing
 	{
-		int Id { get; set; }
-		string Name { get; set; }
-		int HitPoints { get; set; }
-		double Moves { get; set; }
+		void Grow();
 	}
 }
