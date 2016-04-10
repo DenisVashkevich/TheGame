@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Interfaces
+namespace Core.Entities.Map
 {
-	public interface IPlayer
+	public class Map
 	{
-		void ConsumeInteractiveObject();
+		private MapTileBase[][]  TileMap = new MapTileBase[Defines.Map.MAP_HEIGHT][];
 	}
 }

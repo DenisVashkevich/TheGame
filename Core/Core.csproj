@@ -40,18 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Defines.cs" />
+    <Compile Include="Entities\Creatures\Bear.cs" />
+    <Compile Include="Entities\Map\DesertTile.cs" />
+    <Compile Include="Entities\Map\ForestTile.cs" />
+    <Compile Include="Entities\Map\GrassTile.cs" />
+    <Compile Include="Entities\Map\Map.cs" />
+    <Compile Include="Entities\Map\RockTile.cs" />
+    <Compile Include="Entities\Map\TerrainTypes.cs" />
+    <Compile Include="Entities\Map\WaterTile.cs" />
     <Compile Include="Enums\MoveDirection.cs" />
     <Compile Include="Interfaces\IAIControlled.cs" />
-    <Compile Include="Interfaces\ICanFly.cs" />
-    <Compile Include="Models\Monster.cs" />
-    <Compile Include="Models\Player.cs" />
-    <Compile Include="Interfaces\ICreature.cs" />
-    <Compile Include="Interfaces\IGrowing.cs" />
+    <Compile Include="Entities\Creatures\Monster.cs" />
+    <Compile Include="Entities\Creatures\Player.cs" />
     <Compile Include="Interfaces\IConsumable.cs" />
-    <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="EventArgs\AttackActionEventArgs.cs" />
-    <Compile Include="Models\BaseStats.cs" />
-    <Compile Include="Models\Map\MapTileBase.cs" />
+    <Compile Include="Entities\Creatures\CreatureBase.cs" />
+    <Compile Include="Entities\Map\MapTileBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
