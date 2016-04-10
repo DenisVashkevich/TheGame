@@ -1,20 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entities.Map;
 
 namespace Core.Entities.Creatures
 {
 	public class Bear : Monster
 	{
-		public Bear(string name, int moves, int damage, TerrainTypes passableTerrainTypes) : base(name, moves, damage, passableTerrainTypes)
+		public Bear()
+			: base(
+				"Bear",
+				Defines.Creature.Bear.BEAR_MOVEMENT,
+				Defines.Creature.Bear.BEAR_DAMAGE,
+				Defines.Creature.LAND_CREATURE_BASE_PASSABLE_TERRAIN_TYPES)
 		{
+		}
+
+		public override void Attack()
+		{
+			//TODO : implement monster attack logic
+			throw new NotImplementedException();
 		}
 
 		public override void Move()
 		{
+			//TODO : implement monster movement logic
 			throw new NotImplementedException();
 		}
 	}

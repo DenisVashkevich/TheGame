@@ -6,12 +6,12 @@ namespace Core.Entities.Creatures
 	{
 		private readonly string _name;
 		private int _movement;
-		private double _movesLeftForThisTurn;
+		private double _movementLeftForThisTurn;
 		private TerrainTypes _passableTerrainTypes;
 
 		public double Movement => _movement;
 		public string Name => _name;
-		public double MovesLeftForThisTurn => _movesLeftForThisTurn;
+		public double MovementLeftForThisTurn => _movementLeftForThisTurn;
 
 		protected CreatureBase(string name, int movement, TerrainTypes passableTerrainTypes)
 		{
