@@ -1,4 +1,6 @@
-﻿namespace Core.Entities.Map
+﻿using Core.Entities.ConsumableObjects;
+
+namespace Core.Entities.Map
 {
 	public abstract class MapTileBase
 	{
@@ -9,6 +11,8 @@
 		public double MovesCostToMoveOnTile => _movesCostToMoveOnTile;
 		public string Description => _description;
 		public TerrainTypes TerrainType => _terrainType;
+
+		public ConsumableItemBase ConsumableItem { get; set; }
 
 		protected MapTileBase(string description, TerrainTypes terrainType, double movesCostToMoveOnTile)
 		{

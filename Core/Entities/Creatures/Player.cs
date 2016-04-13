@@ -1,19 +1,21 @@
 ﻿using System;
+using Core.Entities.ConsumableObjects;
 using Core.Entities.Creatures;
 
 namespace Core
 {
 	public class Player : CreatureBase
 	{
-		private readonly int _hitPoints;
-		private int _hitPointsLeft;
+		private readonly uint _hitPoints;
+		private uint _hitPointsLeft;
+		private 
 
-		public int HitPoints => _hitPoints;
-		public int HitPointsLeft => _hitPointsLeft;
+		public uint HitPoints => _hitPoints;
+		public uint HitPointsLeft => _hitPointsLeft;
 
-		public Player(int hitPoints)
+		public Player(string name, uint hitPoints)
 			: base(
-				"Local Hero",
+				name,
 				Defines.Creature.Player.PLAYER_BASE_MOVEMENT,
 				Defines.Creature.LAND_CREATURE_BASE_PASSABLE_TERRAIN_TYPES)
 		{
@@ -29,6 +31,27 @@ namespace Core
 		public void TakeDamage(int amount)
 		{
 			//TODO : implement player taking damage logic
+		}
+
+		public ConsumptionResult TryToConsumeItem(ConsumableItemBase item)
+		{
+			if (_movementLeftForThisTurn < item.MovementCostToConsume)
+			{
+				return ConsumptionResult.NOT_ENOUGH_MOVEMENT;
+			}
+
+			var missingHP = _hitPoints - _hitPointsLeft;
+			var misingMovement = Movement - _movementLeftForThisTurn;
+
+			_hitPointsLeft += item.Effect.HPAmountToRestore <= missingHP 
+				? item.Effect.HPAmountToRestore 
+				: missingHP;
+
+			_movementLeftForThisTurn += item.Effect.MovementAmountToRestore <= misingMovement
+				? item.Effect.MovementAmountToRestore
+				: misingMovement;
+
+			return ConsumptionResult.CONSUMED;
 		}
 	}
 }

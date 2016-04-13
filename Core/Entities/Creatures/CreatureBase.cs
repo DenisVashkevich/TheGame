@@ -6,8 +6,8 @@ namespace Core.Entities.Creatures
 	{
 		private readonly string _name;
 		private int _movement;
-		private double _movementLeftForThisTurn;
-		private TerrainTypes _passableTerrainTypes;
+		protected double _movementLeftForThisTurn;
+		protected TerrainTypes _passableTerrainTypes;
 
 		public double Movement => _movement;
 		public string Name => _name;

@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Enums
+namespace Core.Entities.ConsumableObjects
 {
-	public enum MoveDirection
+	public enum ConsumptionResult
 	{
-		WEST,
-		NORTH,
-		EAST,
-		SOUTH
+		CONSUMED,
+		NOT_ENOUGH_MOVEMENT
 	}
 }

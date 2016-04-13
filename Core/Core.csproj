@@ -41,6 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Defines.cs" />
+    <Compile Include="Entities\ConsumableObjects\ConsumableItemBase.cs" />
+    <Compile Include="Entities\ConsumableObjects\ConsumptionEffect.cs" />
+    <Compile Include="Entities\ConsumableObjects\ConsumptionResult.cs" />
+    <Compile Include="Entities\ConsumableObjects\HealthyCherry.cs" />
+    <Compile Include="Entities\ConsumableObjects\StrawberryOfSpeed.cs" />
     <Compile Include="Entities\Creatures\Bear.cs" />
     <Compile Include="Entities\Map\DesertTile.cs" />
     <Compile Include="Entities\Map\ForestTile.cs" />
@@ -49,7 +54,7 @@
     <Compile Include="Entities\Map\RockTile.cs" />
     <Compile Include="Entities\Map\TerrainTypes.cs" />
     <Compile Include="Entities\Map\WaterTile.cs" />
-    <Compile Include="Enums\MoveDirection.cs" />
+    <Compile Include="Entities\Map\MoveDirection.cs" />
     <Compile Include="Entities\Creatures\Monster.cs" />
     <Compile Include="Entities\Creatures\Player.cs" />
     <Compile Include="EventArgs\AttackActionEventArgs.cs" />
