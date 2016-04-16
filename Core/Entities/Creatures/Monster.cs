@@ -8,8 +8,8 @@ namespace Core.Entities.Creatures
 
 		public int Damage => _damage;
 
-		protected Monster(string name, int movement, int damage, TerrainTypes passableTerrainTypes)
-			: base(name, movement, passableTerrainTypes)
+		protected Monster(int movement, int damage, TerrainTypes passableTerrainTypes)
+			: base(movement, passableTerrainTypes)
 		{
 			_damage = damage;
 		}

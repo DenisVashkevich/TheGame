@@ -12,8 +12,6 @@ namespace Core.Entities.Map
 		public string Description => _description;
 		public TerrainTypes TerrainType => _terrainType;
 
-		public ConsumableItemBase ConsumableItem { get; set; }
-
 		protected MapTileBase(string description, TerrainTypes terrainType, double movesCostToMoveOnTile)
 		{
 			_description = description;

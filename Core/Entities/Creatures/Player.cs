@@ -1,26 +1,28 @@
 ﻿using System;
 using Core.Entities.ConsumableObjects;
-using Core.Entities.Creatures;
+using Core.Services.EventManager;
 
-namespace Core
+namespace Core.Entities.Creatures
 {
 	public class Player : CreatureBase
 	{
+		private readonly string _name;
 		private readonly uint _hitPoints;
 		private uint _hitPointsLeft;
-		private 
 
 		public uint HitPoints => _hitPoints;
 		public uint HitPointsLeft => _hitPointsLeft;
 
 		public Player(string name, uint hitPoints)
 			: base(
-				name,
 				Defines.Creature.Player.PLAYER_BASE_MOVEMENT,
 				Defines.Creature.LAND_CREATURE_BASE_PASSABLE_TERRAIN_TYPES)
 		{
+			_name = name;
 			_hitPoints = hitPoints;
 		}
+
+		public override string Name => _name;
 
 		public override void Move()
 		{

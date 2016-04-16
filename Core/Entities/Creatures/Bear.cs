@@ -6,12 +6,13 @@ namespace Core.Entities.Creatures
 	{
 		public Bear()
 			: base(
-				"Bear",
 				Defines.Creature.Bear.BEAR_MOVEMENT,
 				Defines.Creature.Bear.BEAR_DAMAGE,
 				Defines.Creature.LAND_CREATURE_BASE_PASSABLE_TERRAIN_TYPES)
 		{
 		}
+
+		public override string Name => "Bear";
 
 		public override void Attack()
 		{
