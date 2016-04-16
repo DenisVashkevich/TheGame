@@ -1,19 +1,22 @@
 ﻿using Core.Entities.Map;
+using Core.Entities.Map.Tiles;
+using Core.Services.EventManager;
+using Core.Services.EventManager.Messages;
 
 namespace Core.Entities.Creatures
 {
 	public abstract class Monster : CreatureBase
 	{
-		private readonly int _damage;
+		public abstract uint Damage { get; }
 
-		public int Damage => _damage;
-
-		protected Monster(int movement, int damage, TerrainTypes passableTerrainTypes)
-			: base(movement, passableTerrainTypes)
+		protected Monster(uint id,  TerrainTypes passableTerrainTypes)
+			: base(id, passableTerrainTypes)
 		{
-			_damage = damage;
 		}
 
-		public abstract void Attack();
+		public virtual void Attack()
+		{
+			EventManager.Raise(new AttackMessage() {Damage = Damage});
+		}
 	}
 }

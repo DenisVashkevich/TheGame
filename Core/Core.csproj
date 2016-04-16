@@ -46,24 +46,28 @@
     <Compile Include="Entities\ConsumableObjects\ConsumptionResult.cs" />
     <Compile Include="Entities\ConsumableObjects\HealthyCherry.cs" />
     <Compile Include="Entities\ConsumableObjects\StrawberryOfSpeed.cs" />
+    <Compile Include="Entities\Creatures\Bat.cs" />
     <Compile Include="Entities\Creatures\Bear.cs" />
-    <Compile Include="Entities\Map\DesertTile.cs" />
-    <Compile Include="Entities\Map\ForestTile.cs" />
-    <Compile Include="Entities\Map\GrassTile.cs" />
+    <Compile Include="Entities\Creatures\Wolf.cs" />
+    <Compile Include="Entities\Map\Tiles\DesertTile.cs" />
+    <Compile Include="Entities\Map\Tiles\ForestTile.cs" />
+    <Compile Include="Entities\Map\Tiles\GrassTile.cs" />
     <Compile Include="Entities\Map\Map.cs" />
-    <Compile Include="Entities\Map\RockTile.cs" />
-    <Compile Include="Entities\Map\TerrainTypes.cs" />
-    <Compile Include="Entities\Map\WaterTile.cs" />
+    <Compile Include="Entities\Map\Tiles\RockTile.cs" />
+    <Compile Include="Entities\Map\Tiles\TerrainTypes.cs" />
+    <Compile Include="Entities\Map\Tiles\WaterTile.cs" />
     <Compile Include="Entities\Map\MoveDirection.cs" />
     <Compile Include="Entities\Creatures\Monster.cs" />
     <Compile Include="Entities\Creatures\Player.cs" />
     <Compile Include="EventArgs\AttackActionEventArgs.cs" />
     <Compile Include="Entities\Creatures\CreatureBase.cs" />
-    <Compile Include="Entities\Map\MapTileBase.cs" />
+    <Compile Include="Entities\Map\Tiles\MapTileBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EventManager\EventManager.cs" />
     <Compile Include="Services\EventManager\IMessageHandler.cs" />
+    <Compile Include="Services\EventManager\Messages\AttackMessage.cs" />
     <Compile Include="Services\EventManager\Messages\MoveCreatureMessage.cs" />
+    <Compile Include="Services\EventManager\Messages\NewTurnMessage.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

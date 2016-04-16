@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.Entities.ConsumableObjects;
 using Core.Entities.Creatures;
+using Core.Entities.Map.Tiles;
 
 namespace Core.Entities.Map
 {

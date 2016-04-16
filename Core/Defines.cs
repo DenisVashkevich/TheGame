@@ -1,4 +1,4 @@
-﻿using Core.Entities.Map;
+﻿using Core.Entities.Map.Tiles;
 
 namespace Core
 {
@@ -13,20 +13,35 @@ namespace Core
 
 		public static class Creature
 		{
+			public const TerrainTypes LAND_CREATURE_PASSABLE_TERRAIN_TYPES =
+				TerrainTypes.DESERT | TerrainTypes.FOREST | TerrainTypes.GRASS;
+
+			public const TerrainTypes FLYING_CREATURE_PASSABLE_TERRAIN_TYPES =
+				LAND_CREATURE_PASSABLE_TERRAIN_TYPES | TerrainTypes.WATER | TerrainTypes.ROCK;
+
 			public static class Player
 			{
-				public const int PLAYER_BASE_MOVEMENT = 5;
+				public const int PLAYER_BASE_MOVEMENT = 4;
 				public const int PLAYER_BASE_HITPOINTS = 10;
 			}
 
 			public static class Bear
 			{
-				public const int BEAR_MOVEMENT = 5;
-				public const int BEAR_DAMAGE = 10;
+				public const int MOVEMENT = 2;
+				public const int DAMAGE = 10;
 			}
 
-			public const TerrainTypes LAND_CREATURE_BASE_PASSABLE_TERRAIN_TYPES =
-				TerrainTypes.DESERT | TerrainTypes.FOREST | TerrainTypes.GRASS;
+			public static class Wolf
+			{
+				public const int MOVEMENT = 3;
+				public const int DAMAGE = 5;
+			}
+
+			public static class Bat
+			{
+				public const int MOVEMENT = 4;
+				public const int DAMAGE = 2;
+			}
 		}
 	}
 }

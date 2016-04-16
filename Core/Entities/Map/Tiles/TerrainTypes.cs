@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Entities.Map
+namespace Core.Entities.Map.Tiles
 {
 	[Flags]
 	public enum TerrainTypes : short

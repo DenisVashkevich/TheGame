@@ -1,38 +1,37 @@
-﻿using System;
-using Core.Entities.ConsumableObjects;
+﻿using Core.Entities.ConsumableObjects;
 using Core.Services.EventManager;
+using Core.Services.EventManager.Messages;
 
 namespace Core.Entities.Creatures
 {
-	public class Player : CreatureBase
+	public class Player : CreatureBase, IMessageHandler<AttackMessage>
 	{
-		private readonly string _name;
 		private readonly uint _hitPoints;
+		private readonly string _name;
 		private uint _hitPointsLeft;
-
+		private uint _movement;
 		public uint HitPoints => _hitPoints;
 		public uint HitPointsLeft => _hitPointsLeft;
-
-		public Player(string name, uint hitPoints)
-			: base(
-				Defines.Creature.Player.PLAYER_BASE_MOVEMENT,
-				Defines.Creature.LAND_CREATURE_BASE_PASSABLE_TERRAIN_TYPES)
-		{
-			_name = name;
-			_hitPoints = hitPoints;
-		}
+		public override double Movement { get; }
 
 		public override string Name => _name;
 
-		public override void Move()
+
+		public Player(string name, uint id)
+			: base(id, Defines.Creature.LAND_CREATURE_PASSABLE_TERRAIN_TYPES)
 		{
-			//TODO : implement player movement logic
-			throw new NotImplementedException();
+			_name = name;
+			_movement = Defines.Creature.Player.PLAYER_BASE_MOVEMENT;
+			_movementLeftForThisTurn = _movement;
+			_hitPoints = Defines.Creature.Player.PLAYER_BASE_HITPOINTS;
+			_hitPointsLeft = _hitPoints;
+
+			EventManager.Subscribe<AttackMessage>(this);
 		}
 
-		public void TakeDamage(int amount)
+		public void Handle(AttackMessage message)
 		{
-			//TODO : implement player taking damage logic
+			TakeDamage(message.Damage);
 		}
 
 		public ConsumptionResult TryToConsumeItem(ConsumableItemBase item)
@@ -45,8 +44,8 @@ namespace Core.Entities.Creatures
 			var missingHP = _hitPoints - _hitPointsLeft;
 			var misingMovement = Movement - _movementLeftForThisTurn;
 
-			_hitPointsLeft += item.Effect.HPAmountToRestore <= missingHP 
-				? item.Effect.HPAmountToRestore 
+			_hitPointsLeft += item.Effect.HPAmountToRestore <= missingHP
+				? item.Effect.HPAmountToRestore
 				: missingHP;
 
 			_movementLeftForThisTurn += item.Effect.MovementAmountToRestore <= misingMovement
@@ -54,6 +53,11 @@ namespace Core.Entities.Creatures
 				: misingMovement;
 
 			return ConsumptionResult.CONSUMED;
+		}
+
+		private void TakeDamage(uint damage)
+		{
+			_hitPointsLeft -= damage;
 		}
 	}
 }

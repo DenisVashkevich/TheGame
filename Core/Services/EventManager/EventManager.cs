@@ -25,10 +25,16 @@ namespace Core.Services.EventManager
 		public static void Usubscribe<T>(IMessageHandler<T> handler)
 		{
 			var eventType = typeof (T);
+
 			if (_eventToHandlersMap.ContainsKey(eventType))
 			{
 				_eventToHandlersMap[eventType].Remove(handler);
 			}
+		}
+
+		public static void UnsubscribeAll()
+		{
+			_eventToHandlersMap.Clear();
 		}
 
 		public static void Raise<T>(T evnt)
