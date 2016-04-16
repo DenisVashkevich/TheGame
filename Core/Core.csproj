@@ -47,7 +47,6 @@
     <Compile Include="Entities\ConsumableObjects\HealthyCherry.cs" />
     <Compile Include="Entities\ConsumableObjects\StrawberryOfSpeed.cs" />
     <Compile Include="Entities\Creatures\Bear.cs" />
-    <Compile Include="Entities\Map\MapPosition.cs" />
     <Compile Include="Entities\Map\DesertTile.cs" />
     <Compile Include="Entities\Map\ForestTile.cs" />
     <Compile Include="Entities\Map\GrassTile.cs" />
