@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Core.Entities.ConsumableObjects;
 using Core.Entities.Creatures;
 
@@ -7,39 +6,47 @@ namespace Core.Entities.Map
 {
 	public class Map
 	{
-		private readonly Dictionary<MapTileBase, CreatureBase> _creaturesPositions;
-		private readonly Dictionary<MapTileBase, ConsumableItemBase> _itemsPositions;
-		private MapTileBase[,] _tileMap = new MapTileBase[Defines.Map.MAP_WIDTH, Defines.Map.MAP_HEIGHT];
+		private readonly CreatureBase[,] _creaturesMap;
+		private readonly ConsumableItemBase[,] _itemsMap;
+		private readonly MapTileBase[,] _tileMap;
 
 		public Map()
 		{
-			_creaturesPositions = new Dictionary<MapTileBase, CreatureBase>();
-			_itemsPositions = new Dictionary<MapTileBase, ConsumableItemBase>();
+			_tileMap = new MapTileBase[Defines.Map.MAP_WIDTH, Defines.Map.MAP_HEIGHT];
+			_creaturesMap = new CreatureBase[Defines.Map.MAP_WIDTH, Defines.Map.MAP_HEIGHT];
+			_itemsMap = new ConsumableItemBase[Defines.Map.MAP_WIDTH, Defines.Map.MAP_HEIGHT];
 		}
 
-		public bool TryToAddCreature(CreatureBase creature, MapTileBase position)
+		public bool TryToAddMonster(Monster monster, uint xPos, uint yPos)
 		{
-			if (!_creaturesPositions.ContainsKey(position))
+			if (_creaturesMap[xPos, yPos] == null)
 			{
-				_creaturesPositions.Add(position, creature);
+				_creaturesMap[xPos, yPos] = monster;
+
 				return true;
 			}
 
 			return false;
 		}
 
-		public bool TryToAddItem(ConsumableItemBase item, MapTileBase position)
+		public bool TryToAddItem(ConsumableItemBase item, uint xPos, uint yPos)
 		{
-			if (!_itemsPositions.ContainsKey(position))
+			if (_itemsMap[xPos, yPos] == null)
 			{
-				_itemsPositions.Add(position, item);
+				_itemsMap[xPos, yPos] = item;
+
 				return true;
 			}
 
 			return false;
 		}
 
-		public bool TryToCreateRectangularMapRegion(uint xPos, uint yPos, uint regionWidth, uint regionHeight, MapTileBase tile)
+		public bool TryToCreateRectangularMapRegion(
+			uint xPos,
+			uint yPos,
+			uint regionWidth,
+			uint regionHeight,
+			MapTileBase tile)
 		{
 			if ((xPos + regionWidth > Defines.Map.MAP_WIDTH) || (yPos + regionHeight > Defines.Map.MAP_HEIGHT) ||
 			    regionWidth == 0 || regionHeight == 0 || tile == null)
@@ -51,7 +58,7 @@ namespace Core.Entities.Map
 			{
 				for (var j = 0; j <= regionHeight - 1; j++)
 				{
-					_tileMap[xPos + i,yPos + j] = tile;
+					_tileMap[xPos + i, yPos + j] = tile;
 				}
 			}
 
@@ -60,7 +67,7 @@ namespace Core.Entities.Map
 
 		public bool ValidateMap()
 		{
-			return _tileMap.Cast<MapTileBase>().Any(tile => tile == null);
+			return _tileMap.Cast<MapTileBase>().All(tile => tile != null);
 		}
 
 		public MapTileBase GetAdjoiningTile(MapTileBase baseTile, MoveDirection direction)
