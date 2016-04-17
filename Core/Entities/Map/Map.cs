@@ -4,44 +4,55 @@ using System.Linq;
 using Core.Entities.ConsumableObjects;
 using Core.Entities.Creatures;
 using Core.Entities.Map.Tiles;
+using Core.Services.EventManager;
+using Core.Services.EventManager.Messages;
 
 namespace Core.Entities.Map
 {
-	public class Map
+	public class Map : IMessageHandler<TryToMoveMonsterMessage>, IMessageHandler<TryToMovePlayerMessage>
 	{
-		private readonly CreatureBase[,] _creaturesMap;
-		private readonly ConsumableItemBase[,] _itemsMap;
+		private readonly Dictionary<uint, OnMapPosition> _creaturesPositions;
+		private readonly Dictionary<uint, OnMapPosition> _itemsPositions;
+		//private OnMapPosition _playerPosition;
 		private readonly MapTileBase[,] _tileMap;
 		private readonly Dictionary<Type, MapTileBase> _tilesDictionary; 
 
 		public Map()
 		{
 			_tileMap = new MapTileBase[Defines.Map.MAP_HEIGHT, Defines.Map.MAP_WIDTH];
-			_creaturesMap = new CreatureBase[Defines.Map.MAP_HEIGHT, Defines.Map.MAP_WIDTH];
-			_itemsMap = new ConsumableItemBase[Defines.Map.MAP_HEIGHT, Defines.Map.MAP_WIDTH];
+			_creaturesPositions = new Dictionary<uint, OnMapPosition>();
+			_itemsPositions = new Dictionary<uint, OnMapPosition>();
+			//_playerPosition = new OnMapPosition();
 			_tilesDictionary = new Dictionary<Type, MapTileBase>();
+
+			EventManager.Subscribe<TryToMoveMonsterMessage>(this);
+			EventManager.Subscribe<TryToMovePlayerMessage>(this);
 		}
 
-		public bool TryToAddMonster(Monster monster, uint xPos, uint yPos)
+		public bool TryToAddMonster(uint monsterId, uint xPos, uint yPos)
 		{
-			if (_creaturesMap[yPos, xPos] != null)
+			var monsterPos = new OnMapPosition() {XPos = xPos, YPos = yPos};
+
+			if (_creaturesPositions.ContainsValue(monsterPos))
 			{
 				return false;
 			}
 
-			_creaturesMap[yPos, xPos] = monster;
+			_creaturesPositions.Add(monsterId, monsterPos);
 
 			return true;
 		}
 
-		public bool TryToAddItem(ConsumableItemBase item, uint xPos, uint yPos)
+		public bool TryToAddItem(uint itemId, uint xPos, uint yPos)
 		{
-			if (_itemsMap[yPos, xPos] != null)
+			var itemPos = new OnMapPosition() {XPos = xPos, YPos = yPos};
+
+			if (_itemsPositions.ContainsValue(itemPos))
 			{
 				return false;
 			}
 
-			_itemsMap[yPos, xPos] = item;
+			_itemsPositions.Add(itemId, itemPos);
 
 			return true;
 		}
@@ -98,9 +109,11 @@ namespace Core.Entities.Map
 			TryToCreateRectangularMapRegion<RockTile>(22, 21, 2, 3);
 		}
 
-		public MapTileBase GetAdjoiningTile(MapTileBase baseTile, MoveDirection direction)
+		public MapTileInfo GetAdjoiningLocationInfo(uint creatureId, MoveDirection direction)
 		{
-			if (baseTile == null)
+			var curentCreaturePosition = _creaturesPositions[creatureId];
+
+			if (curentCreaturePosition == null)
 			{
 				return null;
 			}
@@ -108,6 +121,126 @@ namespace Core.Entities.Map
 			switch (direction)
 			{
 				case MoveDirection.EAST:
+					if (curentCreaturePosition.XPos + 1 < Defines.Map.MAP_WIDTH)
+					{
+						var newCreaturePosition = new OnMapPosition()
+						{
+							XPos = curentCreaturePosition.XPos + 1,
+							YPos = curentCreaturePosition.YPos
+						};
+
+						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
+
+						return new MapTileInfo()
+						{
+							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
+							CreatureId = ocupiedCreatureId,
+							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
+						};
+					}
+
+					return null;
+
+					break;
+
+				case MoveDirection.NORTH:
+					if ((int)curentCreaturePosition.YPos - 1 >= 0)
+					{
+						var newCreaturePosition = new OnMapPosition()
+						{
+							XPos = curentCreaturePosition.XPos,
+							YPos = curentCreaturePosition.YPos - 1
+						};
+
+						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
+
+						return new MapTileInfo()
+						{
+							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
+							CreatureId = ocupiedCreatureId,
+							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
+						};
+					}
+
+					return null;
+
+					break;
+				case MoveDirection.SOUTH:
+					if (curentCreaturePosition.YPos + 1 < Defines.Map.MAP_HEIGHT)
+					{
+						var newCreaturePosition = new OnMapPosition()
+						{
+							XPos = curentCreaturePosition.XPos,
+							YPos = curentCreaturePosition.YPos + 1
+						};
+
+						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
+
+						return new MapTileInfo()
+						{
+							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
+							CreatureId = ocupiedCreatureId,
+							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
+						};
+					}
+
+					return null;
+
+					break;
+				case MoveDirection.WEST:
+					if ((int)curentCreaturePosition.XPos - 1 >= 0)
+					{
+						var newCreaturePosition = new OnMapPosition()
+						{
+							XPos = curentCreaturePosition.XPos -1,
+							YPos = curentCreaturePosition.YPos
+						};
+
+						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
+
+						return new MapTileInfo()
+						{
+							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
+							CreatureId = ocupiedCreatureId,
+							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
+						};
+					}
+
+					return null;
+
+					break;
+			}
+
+			return null;
+		}
+
+		private OnMapPosition GetMonsterPosition(uint creatureId)
+		{
+			return _creaturesPositions[creatureId];
+		}
+
+		public void Handle(TryToMoveMonsterMessage message)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(TryToMovePlayerMessage message)
+		{
+			OnMapPosition newPosition;
+
+			switch (message.Direction)
+			{
+				case MoveDirection.EAST:
+					//if (_playerPosition.XPos + 1 < Defines.Map.MAP_WIDTH)
+					//{
+					//	newPosition = new OnMapPosition() {XPos = _playerPosition.XPos + 1, YPos = _playerPosition.YPos};
+
+					//	if (!_creaturesPositions.ContainsValue(newPosition))
+					//	{
+							
+					//	}
+					//}
+					
 					break;
 				case MoveDirection.NORTH:
 					break;
@@ -117,7 +250,6 @@ namespace Core.Entities.Map
 					break;
 			}
 
-			return null;
 		}
 	}
 }

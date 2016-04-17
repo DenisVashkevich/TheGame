@@ -13,7 +13,7 @@ namespace Core.Entities.ConsumableObjects
 		public override ConsumptionEffect Effect { get; }
 		public override uint MovementCostToConsume { get; }
 
-		public StrawberryOfSpeed()
+		public StrawberryOfSpeed(uint id) : base(id)
 		{
 			Effect = new ConsumptionEffect() {HPAmountToRestore = 0, MovementAmountToRestore = 5};
 			MovementCostToConsume = 1;

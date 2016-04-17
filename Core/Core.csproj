@@ -49,6 +49,8 @@
     <Compile Include="Entities\Creatures\Bat.cs" />
     <Compile Include="Entities\Creatures\Bear.cs" />
     <Compile Include="Entities\Creatures\Wolf.cs" />
+    <Compile Include="Entities\Map\MapTileInfo.cs" />
+    <Compile Include="Entities\Map\OnMapPosition.cs" />
     <Compile Include="Entities\Map\Tiles\DesertTile.cs" />
     <Compile Include="Entities\Map\Tiles\ForestTile.cs" />
     <Compile Include="Entities\Map\Tiles\GrassTile.cs" />
@@ -59,7 +61,6 @@
     <Compile Include="Entities\Map\MoveDirection.cs" />
     <Compile Include="Entities\Creatures\Monster.cs" />
     <Compile Include="Entities\Creatures\Player.cs" />
-    <Compile Include="EventArgs\AttackActionEventArgs.cs" />
     <Compile Include="Entities\Creatures\CreatureBase.cs" />
     <Compile Include="Entities\Map\Tiles\MapTileBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

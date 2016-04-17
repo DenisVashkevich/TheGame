@@ -22,10 +22,7 @@ namespace Core.Entities.Creatures
 			EventManager.Subscribe<NewTurnMessage>(this);
 		}
 
-		public virtual void Move(MoveDirection direction)
-		{
-			EventManager.Raise(new MoveCreatureMessage() {CreatureId = _id, Direction = direction});
-		}
+		public abstract void Move(MoveDirection direction);
 
 		public virtual void Handle(NewTurnMessage message)
 		{

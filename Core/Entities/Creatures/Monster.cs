@@ -18,5 +18,10 @@ namespace Core.Entities.Creatures
 		{
 			EventManager.Raise(new AttackMessage() {Damage = Damage});
 		}
+
+		public override void Move(MoveDirection direction)
+		{
+			EventManager.Raise(new MoveCreatureMessage() { CreatureId = _id, Direction = direction });
+		}
 	}
 }

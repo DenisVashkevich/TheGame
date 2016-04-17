@@ -1,4 +1,5 @@
 ﻿using Core.Entities.ConsumableObjects;
+using Core.Entities.Map;
 using Core.Services.EventManager;
 using Core.Services.EventManager.Messages;
 
@@ -58,6 +59,18 @@ namespace Core.Entities.Creatures
 		private void TakeDamage(uint damage)
 		{
 			_hitPointsLeft -= damage;
+		}
+
+		public override void Move(MoveDirection direction)
+		{
+			//destinationTileInfo will be aquaired fom map object
+			MapTileInfo destinationTileInfo = new MapTileInfo();
+
+			if (MovementLeftForThisTurn > destinationTileInfo.CostToMoveOn &&
+			    _passableTerrainTypes.HasFlag(destinationTileInfo.TerrainType) && destinationTileInfo.CreatureId == 0)
+			{
+				EventManager.Raise(new MoveCreatureMessage() {CreatureId = _id, Direction = direction});
+			}
 		}
 	}
 }

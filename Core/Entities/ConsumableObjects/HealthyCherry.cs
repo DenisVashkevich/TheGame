@@ -13,7 +13,7 @@ namespace Core.Entities.ConsumableObjects
 
 		public override string Name => "Healthy Cherry";
 
-		public HealthyCherry()
+		public HealthyCherry(uint id) : base(id)
 		{
 			Effect = new ConsumptionEffect() {HPAmountToRestore = 5, MovementAmountToRestore = 0};
 			MovementCostToConsume = 1;
