@@ -11,9 +11,11 @@ namespace Core.Entities.Creatures
 		protected double _movementLeftForThisTurn;
 		protected TerrainTypes _passableTerrainTypes;
 
+		public uint Id => _id;
 		public abstract double Movement { get; }
 		public abstract string Name { get; }
 		public double MovementLeftForThisTurn => _movementLeftForThisTurn;
+		public TerrainTypes PassableTerrainTypes => _passableTerrainTypes;
 
 		protected CreatureBase(uint id, TerrainTypes passableTerrainTypes)
 		{
@@ -21,8 +23,6 @@ namespace Core.Entities.Creatures
 			_passableTerrainTypes = passableTerrainTypes;
 			EventManager.Subscribe<NewTurnMessage>(this);
 		}
-
-		public abstract void Move(MoveDirection direction);
 
 		public virtual void Handle(NewTurnMessage message)
 		{

@@ -70,6 +70,7 @@
     <Compile Include="Services\EventManager\Messages\ConsumableItemFoundMessage.cs" />
     <Compile Include="Services\EventManager\Messages\MoveCreatureMessage.cs" />
     <Compile Include="Services\EventManager\Messages\NewTurnMessage.cs" />
+    <Compile Include="Services\GameProcess.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

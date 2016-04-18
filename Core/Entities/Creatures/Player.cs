@@ -63,18 +63,6 @@ namespace Core.Entities.Creatures
 			_hitPointsLeft -= damage;
 		}
 
-		public override void Move(MoveDirection direction)
-		{
-			//destinationTileInfo will be aquaired fom map object
-			MapTileInfo destinationTileInfo = new MapTileInfo();
-
-			if (MovementLeftForThisTurn > destinationTileInfo.CostToMoveOn &&
-			    _passableTerrainTypes.HasFlag(destinationTileInfo.TerrainType) && destinationTileInfo.CreatureId == 0)
-			{
-				EventManager.Raise(new MoveCreatureMessage() {CreatureId = _id, Direction = direction});
-			}
-		}
-
 		public void Handle(ConsumableItemFoundMessage message)
 		{
 			TryToConsumeItem(message.ItemId);
