@@ -67,6 +67,7 @@
     <Compile Include="Services\EventManager\EventManager.cs" />
     <Compile Include="Services\EventManager\IMessageHandler.cs" />
     <Compile Include="Services\EventManager\Messages\AttackMessage.cs" />
+    <Compile Include="Services\EventManager\Messages\ConsumableItemFoundMessage.cs" />
     <Compile Include="Services\EventManager\Messages\MoveCreatureMessage.cs" />
     <Compile Include="Services\EventManager\Messages\NewTurnMessage.cs" />
   </ItemGroup>

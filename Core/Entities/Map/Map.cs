@@ -9,7 +9,7 @@ using Core.Services.EventManager.Messages;
 
 namespace Core.Entities.Map
 {
-	public class Map : IMessageHandler<TryToMoveMonsterMessage>, IMessageHandler<TryToMovePlayerMessage>
+	public class Map : IMessageHandler<MoveCreatureMessage>
 	{
 		private readonly Dictionary<uint, OnMapPosition> _creaturesPositions;
 		private readonly Dictionary<uint, OnMapPosition> _itemsPositions;
@@ -25,8 +25,7 @@ namespace Core.Entities.Map
 			//_playerPosition = new OnMapPosition();
 			_tilesDictionary = new Dictionary<Type, MapTileBase>();
 
-			EventManager.Subscribe<TryToMoveMonsterMessage>(this);
-			EventManager.Subscribe<TryToMovePlayerMessage>(this);
+			EventManager.Subscribe<MoveCreatureMessage>(this);
 		}
 
 		public bool TryToAddMonster(uint monsterId, uint xPos, uint yPos)
@@ -219,37 +218,31 @@ namespace Core.Entities.Map
 			return _creaturesPositions[creatureId];
 		}
 
-		public void Handle(TryToMoveMonsterMessage message)
+		public void Handle(MoveCreatureMessage message)
 		{
-			throw new NotImplementedException();
-		}
-
-		public void Handle(TryToMovePlayerMessage message)
-		{
-			OnMapPosition newPosition;
-
 			switch (message.Direction)
 			{
 				case MoveDirection.EAST:
-					//if (_playerPosition.XPos + 1 < Defines.Map.MAP_WIDTH)
-					//{
-					//	newPosition = new OnMapPosition() {XPos = _playerPosition.XPos + 1, YPos = _playerPosition.YPos};
-
-					//	if (!_creaturesPositions.ContainsValue(newPosition))
-					//	{
-							
-					//	}
-					//}
-					
+					_creaturesPositions[message.CreatureId].XPos += 1;
 					break;
 				case MoveDirection.NORTH:
+					_creaturesPositions[message.CreatureId].YPos -= 1;
 					break;
 				case MoveDirection.SOUTH:
+					_creaturesPositions[message.CreatureId].YPos += 1;
 					break;
 				case MoveDirection.WEST:
+					_creaturesPositions[message.CreatureId].XPos -= 1;
 					break;
 			}
 
+			var itemId = _itemsPositions.Where(kv => kv.Value.Equals(_creaturesPositions[message.CreatureId])).Select(kv => kv.Key).First();
+
+			if (itemId != 0)
+			{
+				EventManager.Raise(new ConsumableItemFoundMessage() {ItemId = itemId});
+			}
 		}
+
 	}
 }

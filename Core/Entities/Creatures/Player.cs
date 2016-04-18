@@ -1,11 +1,12 @@
-﻿using Core.Entities.ConsumableObjects;
+﻿using System;
+using Core.Entities.ConsumableObjects;
 using Core.Entities.Map;
 using Core.Services.EventManager;
 using Core.Services.EventManager.Messages;
 
 namespace Core.Entities.Creatures
 {
-	public class Player : CreatureBase, IMessageHandler<AttackMessage>
+	public class Player : CreatureBase, IMessageHandler<AttackMessage>, IMessageHandler<ConsumableItemFoundMessage>
 	{
 		private readonly uint _hitPoints;
 		private readonly string _name;
@@ -28,6 +29,7 @@ namespace Core.Entities.Creatures
 			_hitPointsLeft = _hitPoints;
 
 			EventManager.Subscribe<AttackMessage>(this);
+			EventManager.Subscribe<ConsumableItemFoundMessage>(this);
 		}
 
 		public void Handle(AttackMessage message)
@@ -35,23 +37,23 @@ namespace Core.Entities.Creatures
 			TakeDamage(message.Damage);
 		}
 
-		public ConsumptionResult TryToConsumeItem(ConsumableItemBase item)
+		public ConsumptionResult TryToConsumeItem(uint itemId)
 		{
-			if (_movementLeftForThisTurn < item.MovementCostToConsume)
-			{
-				return ConsumptionResult.NOT_ENOUGH_MOVEMENT;
-			}
+			//if (_movementLeftForThisTurn < item.MovementCostToConsume)
+			//{
+			//	return ConsumptionResult.NOT_ENOUGH_MOVEMENT;
+			//}
 
-			var missingHP = _hitPoints - _hitPointsLeft;
-			var misingMovement = Movement - _movementLeftForThisTurn;
+			//var missingHP = _hitPoints - _hitPointsLeft;
+			//var misingMovement = Movement - _movementLeftForThisTurn;
 
-			_hitPointsLeft += item.Effect.HPAmountToRestore <= missingHP
-				? item.Effect.HPAmountToRestore
-				: missingHP;
+			//_hitPointsLeft += item.Effect.HPAmountToRestore <= missingHP
+			//	? item.Effect.HPAmountToRestore
+			//	: missingHP;
 
-			_movementLeftForThisTurn += item.Effect.MovementAmountToRestore <= misingMovement
-				? item.Effect.MovementAmountToRestore
-				: misingMovement;
+			//_movementLeftForThisTurn += item.Effect.MovementAmountToRestore <= misingMovement
+			//	? item.Effect.MovementAmountToRestore
+			//	: misingMovement;
 
 			return ConsumptionResult.CONSUMED;
 		}
@@ -71,6 +73,11 @@ namespace Core.Entities.Creatures
 			{
 				EventManager.Raise(new MoveCreatureMessage() {CreatureId = _id, Direction = direction});
 			}
+		}
+
+		public void Handle(ConsumableItemFoundMessage message)
+		{
+			TryToConsumeItem(message.ItemId);
 		}
 	}
 }
