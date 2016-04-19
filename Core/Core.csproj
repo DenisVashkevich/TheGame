@@ -43,7 +43,6 @@
     <Compile Include="Defines.cs" />
     <Compile Include="Entities\ConsumableObjects\ConsumableItemBase.cs" />
     <Compile Include="Entities\ConsumableObjects\ConsumptionEffect.cs" />
-    <Compile Include="Entities\ConsumableObjects\ConsumptionResult.cs" />
     <Compile Include="Entities\ConsumableObjects\HealthyCherry.cs" />
     <Compile Include="Entities\ConsumableObjects\StrawberryOfSpeed.cs" />
     <Compile Include="Entities\Creatures\Bat.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="Services\EventManager\IMessageHandler.cs" />
     <Compile Include="Services\EventManager\Messages\AttackMessage.cs" />
     <Compile Include="Services\EventManager\Messages\ConsumableItemFoundMessage.cs" />
+    <Compile Include="Services\EventManager\Messages\ItemConsumedMessage.cs" />
     <Compile Include="Services\EventManager\Messages\MoveCreatureMessage.cs" />
     <Compile Include="Services\EventManager\Messages\NewTurnMessage.cs" />
     <Compile Include="Services\GameProcess.cs" />

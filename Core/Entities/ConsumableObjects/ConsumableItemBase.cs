@@ -8,6 +8,8 @@
 		public abstract ConsumptionEffect Effect { get; }
 		public abstract uint MovementCostToConsume { get; }
 
+		public uint Id => _id;
+
 		protected ConsumableItemBase(uint id)
 		{
 			_id = id;

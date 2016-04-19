@@ -9,7 +9,7 @@ using Core.Services.EventManager.Messages;
 
 namespace Core.Entities.Map
 {
-	public class Map : IMessageHandler<MoveCreatureMessage>
+	public class Map : IMessageHandler<MoveCreatureMessage>, IMessageHandler<ItemConsumedMessage>
 	{
 		private readonly Dictionary<uint, OnMapPosition> _creaturesPositions;
 		private readonly Dictionary<uint, OnMapPosition> _itemsPositions;
@@ -37,6 +37,8 @@ namespace Core.Entities.Map
 				return false;
 			}
 
+			//TODO: implement check for mapTile passability
+
 			_creaturesPositions.Add(monsterId, monsterPos);
 
 			return true;
@@ -50,6 +52,8 @@ namespace Core.Entities.Map
 			{
 				return false;
 			}
+
+			//TODO: implement check for mapTile passability only for land creatures
 
 			_itemsPositions.Add(itemId, itemPos);
 
@@ -244,5 +248,9 @@ namespace Core.Entities.Map
 			}
 		}
 
+		public void Handle(ItemConsumedMessage message)
+		{
+			_itemsPositions.Remove(message.ItemId);
+		}
 	}
 }
