@@ -4,7 +4,7 @@
 	{
 		public abstract uint MovesCostToMoveOnTile { get; }
 		public abstract string Description { get; }
-		public abstract TerrainTypes TerrainType { get; }
-
+		public abstract bool PasableByLandCreatures { get; }
+		public abstract bool PasableByFlyingCreatures { get; }
 	}
 }

@@ -4,6 +4,7 @@
 	{
 		public override uint MovesCostToMoveOnTile => 4;
 		public override string Description => "Desert";
-		public override TerrainTypes TerrainType => TerrainTypes.DESERT;
+		public override bool PasableByLandCreatures => true;
+		public override bool PasableByFlyingCreatures => true;
 	}
 }

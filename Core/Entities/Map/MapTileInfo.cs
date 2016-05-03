@@ -6,6 +6,5 @@ namespace Core.Entities.Map
 	{
 		public uint CostToMoveOn { get; set; }
 		public uint CreatureId { get; set; }
-		public TerrainTypes TerrainType { get; set; }
 	}
 }

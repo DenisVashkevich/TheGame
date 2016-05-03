@@ -13,17 +13,13 @@ namespace Core.Entities.Map
 	{
 		private readonly Dictionary<uint, OnMapPosition> _creaturesPositions;
 		private readonly Dictionary<uint, OnMapPosition> _itemsPositions;
-		//private OnMapPosition _playerPosition;
 		private readonly MapTileBase[,] _tileMap;
-		private readonly Dictionary<Type, MapTileBase> _tilesDictionary; 
 
 		public Map()
 		{
 			_tileMap = new MapTileBase[Defines.Map.MAP_HEIGHT, Defines.Map.MAP_WIDTH];
 			_creaturesPositions = new Dictionary<uint, OnMapPosition>();
 			_itemsPositions = new Dictionary<uint, OnMapPosition>();
-			//_playerPosition = new OnMapPosition();
-			_tilesDictionary = new Dictionary<Type, MapTileBase>();
 
 			EventManager.Subscribe<MoveCreatureMessage>(this);
 		}
@@ -72,18 +68,11 @@ namespace Core.Entities.Map
 				return false;
 			}
 
-			if (!_tilesDictionary.ContainsKey(typeof (T)))
-			{
-				_tilesDictionary.Add(typeof(T), new T());
-			}
-
-			var tile = _tilesDictionary[typeof (T)];
-
 			for (var i = 0; i <= regionHeight - 1; i++)
 			{
 				for (var j = 0; j <= regionWidth - 1; j++)
 				{
-					_tileMap[yPos + i, xPos + j] = tile;
+					_tileMap[yPos + i, xPos + j] = new T();
 				}
 			}
 
@@ -124,97 +113,45 @@ namespace Core.Entities.Map
 			switch (direction)
 			{
 				case MoveDirection.EAST:
-					if (curentCreaturePosition.XPos + 1 < Defines.Map.MAP_WIDTH)
-					{
-						var newCreaturePosition = new OnMapPosition()
-						{
-							XPos = curentCreaturePosition.XPos + 1,
-							YPos = curentCreaturePosition.YPos
-						};
-
-						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
-
-						return new MapTileInfo()
-						{
-							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
-							CreatureId = ocupiedCreatureId,
-							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
-						};
-					}
-
-					return null;
-
+					return GetTileInfo((int)curentCreaturePosition.XPos + 1, (int)curentCreaturePosition.YPos);
 					break;
 
 				case MoveDirection.NORTH:
-					if ((int)curentCreaturePosition.YPos - 1 >= 0)
-					{
-						var newCreaturePosition = new OnMapPosition()
-						{
-							XPos = curentCreaturePosition.XPos,
-							YPos = curentCreaturePosition.YPos - 1
-						};
-
-						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
-
-						return new MapTileInfo()
-						{
-							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
-							CreatureId = ocupiedCreatureId,
-							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
-						};
-					}
-
-					return null;
-
+					return GetTileInfo((int)curentCreaturePosition.XPos + 1, (int)curentCreaturePosition.YPos - 1);
 					break;
+
 				case MoveDirection.SOUTH:
-					if (curentCreaturePosition.YPos + 1 < Defines.Map.MAP_HEIGHT)
-					{
-						var newCreaturePosition = new OnMapPosition()
-						{
-							XPos = curentCreaturePosition.XPos,
-							YPos = curentCreaturePosition.YPos + 1
-						};
-
-						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
-
-						return new MapTileInfo()
-						{
-							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
-							CreatureId = ocupiedCreatureId,
-							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
-						};
-					}
-
-					return null;
-
+					return GetTileInfo((int)curentCreaturePosition.XPos, (int)curentCreaturePosition.YPos + 1);
 					break;
+
 				case MoveDirection.WEST:
-					if ((int)curentCreaturePosition.XPos - 1 >= 0)
-					{
-						var newCreaturePosition = new OnMapPosition()
-						{
-							XPos = curentCreaturePosition.XPos -1,
-							YPos = curentCreaturePosition.YPos
-						};
-
-						var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newCreaturePosition)).Select(kv => kv.Key).First();
-
-						return new MapTileInfo()
-						{
-							CostToMoveOn = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].MovesCostToMoveOnTile,
-							CreatureId = ocupiedCreatureId,
-							TerrainType = _tileMap[newCreaturePosition.YPos, newCreaturePosition.XPos].TerrainType
-						};
-					}
-
-					return null;
-
+					return GetTileInfo((int)curentCreaturePosition.XPos - 1, (int)curentCreaturePosition.YPos);
 					break;
 			}
 
 			return null;
+		}
+
+		private MapTileInfo GetTileInfo(int x, int y)
+		{
+			if (x >= Defines.Map.MAP_WIDTH || y >= Defines.Map.MAP_HEIGHT)
+			{
+				return null;
+			}
+
+			var newPosition = new OnMapPosition()
+			{
+				XPos = (uint)x,
+				YPos = (uint)y 
+			};
+
+			var ocupiedCreatureId = _creaturesPositions.Where(kv => kv.Value.Equals(newPosition)).Select(kv => kv.Key).FirstOrDefault();
+
+			return new MapTileInfo()
+			{
+				CostToMoveOn = _tileMap[y, x].MovesCostToMoveOnTile,
+				CreatureId = ocupiedCreatureId
+			};
 		}
 
 		private OnMapPosition GetMonsterPosition(uint creatureId)
