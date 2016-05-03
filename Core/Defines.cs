@@ -13,12 +13,6 @@ namespace Core
 
 		public static class Creature
 		{
-			public const TerrainTypes LAND_CREATURE_PASSABLE_TERRAIN_TYPES =
-				TerrainTypes.DESERT | TerrainTypes.FOREST | TerrainTypes.GRASS;
-
-			public const TerrainTypes FLYING_CREATURE_PASSABLE_TERRAIN_TYPES =
-				LAND_CREATURE_PASSABLE_TERRAIN_TYPES | TerrainTypes.WATER | TerrainTypes.ROCK;
-
 			public static class Player
 			{
 				public const int PLAYER_BASE_MOVEMENT = 4;

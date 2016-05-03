@@ -47,7 +47,8 @@
     <Compile Include="Entities\ConsumableObjects\StrawberryOfSpeed.cs" />
     <Compile Include="Entities\Creatures\Bat.cs" />
     <Compile Include="Entities\Creatures\Bear.cs" />
-    <Compile Include="Entities\Creatures\MonsterFactory.cs" />
+    <Compile Include="Entities\IAbstractFactory.cs" />
+    <Compile Include="Entities\GameObjectsFactory.cs" />
     <Compile Include="Entities\Creatures\Wolf.cs" />
     <Compile Include="Entities\Map\MapTileInfo.cs" />
     <Compile Include="Entities\Map\OnMapPosition.cs" />

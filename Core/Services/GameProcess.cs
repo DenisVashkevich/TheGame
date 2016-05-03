@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Entities;
 using Core.Entities.ConsumableObjects;
 using Core.Entities.Creatures;
 using Core.Entities.Map;
@@ -12,19 +13,20 @@ namespace Core.Services
 	public class GameProcess : IMessageHandler<ConsumableItemFoundMessage>
 	{
 		private const uint PLAYER_ID = 1;
-		private const uint MONSTERS_START_ID = 2;
-		private const uint ITEMS_START_ID = 2;
 
 		private GameProcess _instance;
 		private Map _map;
 		private List<CreatureBase> _monsters;
 		private List<ConsumableItemBase> _items;
 		private Player _player;
+		private readonly IAbstractFactory _objectsFactory;
 
 		private GameProcess()
 		{
 			_map = new Map();
 			_monsters = new List<CreatureBase>();
+			_items = new List<ConsumableItemBase>();
+			_objectsFactory = new GameObjectsFactory(PLAYER_ID);
 		}
 
 		public GameProcess GetInstance()
@@ -36,16 +38,12 @@ namespace Core.Services
 		{
 			_map.GenerateDefaultMap();
 
-			AddMonster<Bear>();
-			AddMonster<Wolf>();
-			AddMonster<Bat>();
+			_monsters.Add(_objectsFactory.CreateBat());
+			_monsters.Add(_objectsFactory.CreateBear());
+			_monsters.Add(_objectsFactory.CreateWolf());
 
-			AddItem<HealthyCherry>();
-			AddItem<HealthyCherry>();
-			AddItem<HealthyCherry>();
-			AddItem<StrawberryOfSpeed>();
-			AddItem<StrawberryOfSpeed>();
-			AddItem<StrawberryOfSpeed>();
+			_items.Add(_objectsFactory.CreateHealthyCherry());
+			_items.Add(_objectsFactory.CreateStrawberryOfSpeed());
 
 			foreach (var monster in _monsters)
 			{
@@ -60,24 +58,6 @@ namespace Core.Services
 			
 		}
 
-		public void AddMonster<T>() where T : Monster
-		{
-			uint constrParam = (uint)_monsters.Count + MONSTERS_START_ID;
-
-			T monster = Activator.CreateInstance(typeof (T), constrParam) as T;
-
-			_monsters.Add(monster);
-		}
-
-		public void AddItem<T>() where T : ConsumableItemBase
-		{
-			uint constrParam = (uint)_items.Count + ITEMS_START_ID;
-
-			T item = Activator.CreateInstance(typeof (T), constrParam) as T;
-
-			_items.Add(item);
-		}
-
 		public void AddPlayer(string name)
 		{
 			if (_player != null)
@@ -90,11 +70,11 @@ namespace Core.Services
 		{
 			MapTileInfo destinationTileInfo = _map.GetAdjoiningLocationInfo(creature.Id, direction);
 
-			if (creature.MovementLeftForThisTurn > destinationTileInfo.CostToMoveOn &&
-				creature.PassableTerrainTypes.HasFlag(destinationTileInfo.TerrainType) && destinationTileInfo.CreatureId == 0)
-			{
-				EventManager.EventManager.Raise(new MoveCreatureMessage() { CreatureId = creature.Id, Direction = direction });
-			}
+			//if (creature.MovementLeftForThisTurn > destinationTileInfo.CostToMoveOn &&
+			//	creature.PassableTerrainTypes.HasFlag(destinationTileInfo.TerrainType) && destinationTileInfo.CreatureId == 0)
+			//{
+			//	EventManager.EventManager.Raise(new MoveCreatureMessage() { CreatureId = creature.Id, Direction = direction });
+			//}
 		}
 
 		public void MovePlayer(MoveDirection direction)
